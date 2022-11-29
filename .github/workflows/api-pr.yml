@@ -7,8 +7,6 @@ on:
           required: true
         NUGET_API_KEY:
           required: true
-        PROJECT_NAMESPACE:
-          required: true
      
 jobs:
   test:
