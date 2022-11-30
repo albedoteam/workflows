@@ -61,7 +61,7 @@ jobs:
       run: dotnet test --no-restore --verbosity normal
   
     - name: set build number
-      run: echo "build_number=${{github.run_number}}" >> $GITHUB_OUTPUT
+      run: echo "build_number=${{github.run_number}}${{github.run_number}}" >> $GITHUB_OUTPUT
       id: build_number
 
     - name: set nupkg file version
@@ -69,7 +69,7 @@ jobs:
       id: nupkg_file
       env:
         version: ${{ needs.set-ci-configuration.outputs.version }}
-        rc: ${{ github.ref_name != 'main' && format('.{0}-{1}', steps.build_number.outputs.build_number, 'rc') || '' }}
+        rc: ${{ github.ref_name != 'main' && format('.{0}-{1}', steps.build_number.outputs.build_number, github.run_attempt) || '' }}
 
     - name: dotnet pack
       run: | 
@@ -127,7 +127,11 @@ jobs:
       name: checkout
 
     - name: create tag and release
-      uses: albedoteam/release-creator@v1
+      uses: actions/create-release@master
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
       with:
-        version: ${{ needs.test-and-pack.outputs.nupkg_file_version }}
-        github_token: ${{ github.token }}
+        tag_name: ${{ needs.test-and-pack.outputs.nupkg_file_version }}
+        release_name: v${{ needs.test-and-pack.outputs.nupkg_file_version }}
+        draft: false
+        prerelease: ${{ github.ref_name == 'rc' }}
