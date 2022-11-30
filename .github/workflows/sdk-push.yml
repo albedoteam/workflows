@@ -61,7 +61,7 @@ jobs:
       run: dotnet test --no-restore --verbosity normal
   
     - name: set build number
-      run: echo "build_number=$((github.run_number) - 1))" >> $GITHUB_OUTPUT
+      run: echo "build_number=${{github.run_number}}" >> $GITHUB_OUTPUT
       id: build_number
 
     - name: set nupkg file version
