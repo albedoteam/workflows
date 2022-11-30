@@ -58,7 +58,7 @@ jobs:
         configuration: ${{ github.ref_name == 'main' && 'Release' || 'Debug' }}
       
     - name: dotnet test
-      run: dotnet test --no-build --no-restore --verbosity normal
+      run: dotnet test --no-restore --verbosity normal
   
     - name: set nupkg file version
       run: echo "version=$version$rc" >> $GITHUB_OUTPUT

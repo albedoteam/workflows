@@ -58,7 +58,7 @@ jobs:
         configuration: ${{ github.ref_name == 'main' && 'Release' || 'Debug' }}
       
     - name: dotnet test
-      run: dotnet test --no-build --no-restore --verbosity normal
+      run: dotnet test --no-restore --verbosity normal
   
     - name: dotnet publish
       if: ${{ github.event_name == 'push' }}
